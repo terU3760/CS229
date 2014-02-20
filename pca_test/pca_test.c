@@ -6,7 +6,7 @@
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_eigen.h>
 
-#define DIM 10
+#define DIM 20
 #define NUM_SAMPLE 4096
 #define RADIUS 10.0
 
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
 		sample[5][n] = sample[3][n] * sin(theta);
 		*/
 		sample[4][n] = sample[3][n] * cos(phi);
-		sample[5][n] = sample[3][n] * sin(phi);
+		sample[5][n] = 1000 * sample[3][n] * sin(phi);
 
 		/* compare with all-random data points: */
 		/* for (d = 0; d < DIM; ++d) sample[n][d] = RADIUS * rand() / RAND_MAX; */

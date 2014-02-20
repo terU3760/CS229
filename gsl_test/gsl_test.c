@@ -8,8 +8,8 @@ int main (int argc, char *argv[]) {
 	unsigned int i, j;
 	int s;
 	double ent;
-	gsl_matrix *const H = gsl_matrix_alloc (N, N);
-	gsl_matrix *const inv_H = gsl_matrix_alloc (N, N);
+	gsl_matrix *const H = gsl_matrix_alloc(N, N);
+	gsl_matrix *const inv_H = gsl_matrix_alloc(N, N);
 	gsl_permutation *const perm = gsl_permutation_alloc(N);
 	/* NOTE: the condition number of the n-by-n Hilbert matrix grows as O((1+\sqrt{2})^{4n}/\sqrt{n}). */
 	for (i = 1; i <= N; ++i) {
@@ -21,8 +21,8 @@ int main (int argc, char *argv[]) {
 		}
 	}
 	printf("\n");
-	gsl_linalg_LU_decomp (H, perm, &s);
-	gsl_linalg_LU_invert (H, perm, inv_H);
+	gsl_linalg_LU_decomp(H, perm, &s);
+	gsl_linalg_LU_invert(H, perm, inv_H);
 	/* alternatively, refer to invhilb(5) in MATLAB */
 	for (i = 0; i < N; ++i) {
 		for (j = 0; j < N; ++j) {
