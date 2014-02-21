@@ -13,14 +13,14 @@ double sigmoid(const double x) { return 1.0 / (1.0 + exp(-x)); }
 
 int main(int argc, char *argv[]) {
 	unsigned int i, j, n, flag;
-	double eta, net_sq_err, err, s, d, z, precept, pred, y[NUM_PT], h[NUM_HIDDEN], x[NUM_PT][NUM_INPUT], w1[NUM_HIDDEN][NUM_INPUT], w2[NUM_HIDDEN];
+	double eta, net_sq_err, err, s, d, z, p, pred, y[NUM_PT], h[NUM_HIDDEN], x[NUM_PT][NUM_INPUT], w1[NUM_HIDDEN][NUM_INPUT], w2[NUM_HIDDEN];
 	for (n = 0; n < NUM_PT; ++n) x[n][0] = -1.0 + 2.0 * n / NUM_PT, x[n][1] = 1.0;
 	for (n = 0; n < NUM_PT; ++n) y[n] = sin(x[n][0]);
 	for (j = 0; j < NUM_HIDDEN; ++j) {
 		w2[j] = 1.0; 
 		for (i = 0; i < NUM_INPUT; ++i) w1[j][i] = 1.0;
 	}
-	precept = 0.0;
+	p = 0.0;
 	flag = 0;
 	eta = ETA;
 	do {
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 			net_sq_err += err * err; 
 			/* bwd prop */
 			d = eta * (pred - y[n]);
-			precept -= d;
+			p -= d;
 			for (j = 0; j < NUM_HIDDEN; ++j) {
 				s = 1 - h[j] * h[j];
 				for (i = 0; i < NUM_INPUT; ++i) w1[j][i] -= d * w2[j] * s * x[n][i]; 
