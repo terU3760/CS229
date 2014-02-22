@@ -3,7 +3,6 @@ import weka.core.FastVector;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
-/* import weka.classifiers.functions.IBk; */
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.Evaluation;
 
