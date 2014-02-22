@@ -71,23 +71,24 @@ public class Test {
 	}
 
 	private void test_model() throws Exception {
+		double gain = 0.0;
 		double ct[] = new double[(HIST_SIZE - 1) * (NUM_VAL + 2) + 1];
 		testInstances.setClassIndex((HIST_SIZE - 1) * (NUM_VAL + 2));
+		final Evaluation eval = new Evaluation(trainInstances);
 		for (int k = 0; k < HIST_SIZE; ++k) read_val(k);
 		for (int k = 0; k < NUM_TEST; ++k) {
 			normalize_min_max(k);
 			for (int idx = 0, K = 0; K + 1 < HIST_SIZE; ++K) for (int f = 0; f < NUM_VAL + 2; ++f, ++idx) ct[idx] = n_val[f][(k + K) % HIST_SIZE]; 
-			double diff = val[CLOSE_PRICE_IDX][(k + HIST_SIZE - 1) % HIST_SIZE] - val[OPEN_PRICE_IDX][(k + HIST_SIZE - 1) % HIST_SIZE];
-			if (diff < 0) diff = -diff;
-			Instance current = new Instance(diff * val[VOL_IDX][(k + HIST_SIZE - 1) % HIST_SIZE], ct);
+			double diff = val[CLOSE_PRICE_IDX][(k + HIST_SIZE - 1) % HIST_SIZE] - val[OPEN_PRICE_IDX][(k + HIST_SIZE - 1) % HIST_SIZE], abs_diff = diff < 0.0 ? -diff : diff;
+			Instance current = new Instance(abs_diff * val[VOL_IDX][(k + HIST_SIZE - 1) % HIST_SIZE], ct);
 			current.setDataset(testInstances);
-			current.setClassValue((val[CLOSE_PRICE_IDX][(k + HIST_SIZE - 1) % HIST_SIZE] < val[OPEN_PRICE_IDX][(k + HIST_SIZE - 1) % HIST_SIZE] ? LOSS : PROFIT));
+			current.setClassValue(diff < 0.0 ? LOSS : PROFIT);
 			testInstances.add(current);
+			gain += eval.evaluateModelOnce(model, current) * diff * val[VOL_IDX][(k + HIST_SIZE - 1) % HIST_SIZE];
 			read_val(k % HIST_SIZE);
 		}
-		final Evaluation eval = new Evaluation(trainInstances);
 		eval.evaluateModel(model, testInstances);
-		System.out.println("weighted accuracy: " + eval.pctCorrect());
+		System.out.println("weighted accuracy: " + eval.pctCorrect() + "\nnet gain: " + gain);
 	}
 
 	public static void main(String args[]) throws Exception {
