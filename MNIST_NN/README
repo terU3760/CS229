@@ -1,0 +1,42 @@
+The source code for converting MNIST data to png files is in mnist_to_png.java
+The the conversion program expects the first argument as the file name of the csv file 
+
+A neural network (a multilayer perceptron using tanh transfer functions) with 2 hidden layers and 25 hidden units in each layer was trained and stored in mnist_result.nnet 
+
+The neural network has an input layer of size 197 (196 pixel features + a constant term, as not including the constant term would be a serious faux pas...), 2 hidden layers, and an output layer of size 10 (indicating a score for each category)
+
+The neural network was trained on 8000 randomly chosen sample images (consisting of 800 samples from each of the 10 categories) and tested on another 500 randomly chosen sample images that are NOT present in the training set (consisting of 50 samples from each of the 10 categories) 
+
+The accuracy was 449 / 500 = 90%
+
+
+The following steps are required to train the neural network:
+
+1. Modify NEUROPH_PATH of the Makefile to <neuroph directory> / neuroph-core-2.7.jar (or anything to that effect, such as "ln -s <absolute path to neuroph directory> / neuroph-core-2.7.jar . ", or "cp <path>/neuroph-core-2.7.jar .", etc)
+
+2. Because the training of the neural network may take as many as 10000 iterations (perhaps several hours of running time), users of any reasonable *nix operating system may need to check "ulimit -a" and perhaps need to set some of the limits such as cpu time and virtual memory as "unlimited" for before training the neural network, e.g. 
+
+user @localhost [Thu Mar 06 20:51:45]: /tmp$ ulimit -a
+
+core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 16382
+max locked memory       (kbytes, -l) 64
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 1024
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) 8192
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 1024
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+
+3. make clean && make mnist_nn 
+
+4. chmod +x test_nn.sh
+
+5. ./test_nn.sh
